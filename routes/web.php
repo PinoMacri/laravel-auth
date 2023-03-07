@@ -17,7 +17,7 @@ use App\Http\Controllers\Admin\ProjectController;
 |
 */
 
-Route::get('/', [GuestHomeController::class, "index"]);
+Route::get('/', [GuestHomeController::class, "index"])->name("guest.home");
 Route::middleware(["auth", "verified"])->name("admin.")->prefix("admin")->group(function(){
     Route::get("/", [AdminHomeController::class,"index"])->name("home");
 
