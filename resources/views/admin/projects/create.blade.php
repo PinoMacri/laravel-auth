@@ -62,6 +62,7 @@
         <!-- Bottone -->
         <div class="col-12">
           <button type="submit" class="btn btn-success">Aggiungi</button>
+          <a href="{{route("admin.projects.index")}}" class="d-block">Ritorna ai Progetti</a>   
         </div>
       </form> 
               
