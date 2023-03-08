@@ -9,12 +9,6 @@
 </div>
 @endif
 
-@if(session("delete"))
-<div class="alert alert-danger text-center">
-{{session("delete")}}
-</div>
-@endif
-
 @foreach ($projects as $project)
 <div class="alert text-center alert-success alert-dismissible fade show" role="alert" style="display:none;" id="create-success-alert">
   <p>Il Progetto {{$project->title}} è stato creato con sucesso!</p>
