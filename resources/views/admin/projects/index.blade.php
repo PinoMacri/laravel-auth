@@ -32,7 +32,7 @@
             <td class="text-center">
                 <a href="{{route("admin.projects.show", $project->id)}}" class="btn btn-small btn-primary"><i class="fa-solid fa-eye"></i></a>
                 <a href="{{route("admin.projects.edit", $project->id)}}" class="btn btn-small btn-warning"><i class="fa-solid fa-pen"></i></a>
-                <form class=" d-inline"  action="{{route("admin.projects.destroy", $project->id)}}" method="POST">
+                <form class="delete-form d-inline" data-project="{{$project->title}}"  action="{{route("admin.projects.destroy", $project->id)}}" method="POST">
                   @csrf
                   @method("DELETE")
                   <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i>
@@ -49,4 +49,18 @@
     </table>
 </div>
 </header>
+@endsection
+
+@section("scripts")
+<script>
+  const deleteForms=document.querySelectorAll(".delete-form");
+  deleteForms.forEach(form=>{
+    form.addEventListener("submit", (event)=>{
+      event.preventDefault();
+      const title=form.getAttribute("data-project");
+      const confirm = window.confirm(`Sei sicuro di voler eliminare il progetto ${title}?`);
+      if (confirm) form.submit();
+    })
+  })
+</script>
 @endsection
