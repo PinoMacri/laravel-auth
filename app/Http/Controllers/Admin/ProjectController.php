@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
 
 class ProjectController extends Controller
 {
@@ -67,7 +68,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view ("admin.projects.edit", compact("project"));
     }
 
     /**
@@ -75,7 +76,25 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $data = $request->all();
+        $request->validate([
+            "title"=>["required","string", "min:5", "max:50", Rule::unique("projects")->ignore($project->id)],
+            "description"=>"required|string",
+            "image"=>"url|nullable",
+            "github"=>"required|url|max:100",
+            ], [
+                "title.required" => "ERROR - il titolo è obbligatorio",
+                "title.min" => "ERROR - la lunghezza del titolo deve essere almeno di 5 caratteri",
+                "title.max" => "ERROR - la lunghezza del titolo non deve superare i 50 caratteri",
+                "description.required" => "ERROR - la descrizione è obbligatoria",
+                "image.url" => "ERROR - devi inserire un URL",
+                "github.required" => "ERROR - il link al progetto è obbligatorio",
+                "github.url"=> "ERROR - devi inserire un URL",
+                "github.max"=> "ERROR - la lunghezza del titolo non deve superare i 100 caratteri, controlla che sia un link github",
+            ]);
+        $project->update($data);
+        $project->save();
+        return to_route("admin.projects.show", $project->id);
     }
 
     /**
@@ -83,6 +102,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+        return to_route("admin.projects.index");
     }
 }

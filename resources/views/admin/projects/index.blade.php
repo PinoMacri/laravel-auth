@@ -24,9 +24,15 @@
             <td>{{$project->title}}</td>
             <td>{{ Str::limit($project->description, 50)}}</td>
             <td>{{$project->github}}</td>
-            <td>
+            <td class="text-center">
                 <a href="{{route("admin.projects.show", $project->id)}}" class="btn btn-small btn-primary"><i class="fa-solid fa-eye"></i></a>
-                <a href="{{route("admin.projects.show", $project->id)}}" class="btn btn-small btn-warning"><i class="fa-solid fa-pen"></i></a>
+                <a href="{{route("admin.projects.edit", $project->id)}}" class="btn btn-small btn-warning"><i class="fa-solid fa-pen"></i></a>
+                <form class=" d-inline"  action="{{route("admin.projects.destroy", $project->id)}}" method="POST">
+                  @csrf
+                  @method("DELETE")
+                  <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i>
+                  </button>
+                </form>
             </td>
           </tr>
            @empty

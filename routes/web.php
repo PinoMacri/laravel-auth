@@ -27,7 +27,7 @@ Route::middleware(["auth", "verified"])->name("admin.")->prefix("admin")->group(
     Route::get("/projects/{project}", [ProjectController::class,"show"])->name("projects.show");
     Route::get("/projects{project}/edit", [ProjectController::class,"edit"])->name("projects.edit");
     Route::put("/projects/{project}", [ProjectController::class,"update"])->name("projects.update");
-    Route::delete("/projects/{projects}", [ProjectController::class,"destroy"])->name("projects.destroy");
+    Route::delete("/projects/{project}", [ProjectController::class,"destroy"])->name("projects.destroy");
 });
 
 Route::middleware('auth')->name("profile.")->prefix("/profile")->group(function () {
