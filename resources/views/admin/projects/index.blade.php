@@ -6,6 +6,7 @@
 <header>
 <div class="container">
     <h1 class="my-5">Projects</h1>
+    <a class="btn btn-small btn-primary" href="{{route("admin.projects.create")}}">Aggiungi</a>
     <table class="table table-dark table-striped-columns">
         <thead>
             <tr>
