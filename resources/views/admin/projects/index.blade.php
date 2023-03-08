@@ -3,6 +3,11 @@
 @section("title","Projects")
 
 @section("content")
+@if(session("delete"))
+<div class="alert alert-danger text-center">
+{{session("delete")}}
+</div>
+@endif
 <header>
 <div class="container">
     <h1 class="my-5">Projects</h1>
