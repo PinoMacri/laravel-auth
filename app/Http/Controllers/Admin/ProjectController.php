@@ -51,6 +51,7 @@ class ProjectController extends Controller
         $project=new Project();
         $project->fill($data);
         $project->save();
+        session()->flash('success', 'Creazione avvenuta con successo!');
         return redirect()->route("admin.projects.index");
 
     }
@@ -94,7 +95,7 @@ class ProjectController extends Controller
             ]);
         $project->update($data);
         $project->save();
-        return to_route("admin.projects.show", $project->id);
+        return to_route("admin.projects.show", $project->id)->with("success", "Modifica avvenuta con successo.");
     }
 
     /**

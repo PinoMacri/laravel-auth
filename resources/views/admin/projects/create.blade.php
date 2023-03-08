@@ -4,6 +4,10 @@
 
 @section("content")
 <main>
+  
+  <div class="container">
+    
+
     <div class="container my-5">
      <form class="row g-3" action="{{route("admin.projects.store")}}" method="POST">
         @csrf

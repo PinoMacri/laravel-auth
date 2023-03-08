@@ -3,6 +3,11 @@
 @section("title", $project->title)
 
 @section ("content")
+@if (session("success"))
+    <div class="alert alert-warning text-center">
+        {{ session("success") }}
+    </div>
+@endif
 <header>
     <div class="container">
         <h1 class="my-5">

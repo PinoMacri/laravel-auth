@@ -8,6 +8,20 @@
 {{session("delete")}}
 </div>
 @endif
+
+@if(session("delete"))
+<div class="alert alert-danger text-center">
+{{session("delete")}}
+</div>
+@endif
+
+@foreach ($projects as $project)
+<div class="alert text-center alert-success alert-dismissible fade show" role="alert" style="display:none;" id="create-success-alert">
+  <p>Il Progetto {{$project->title}} è stato creato con sucesso!</p>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endforeach
+
 <header>
 <div class="container">
     <h1 class="my-5">Projects</h1>
@@ -47,6 +61,7 @@
            @endforelse
           </tbody>
     </table>
+
 </div>
 </header>
 @endsection
@@ -61,6 +76,11 @@
       const confirm = window.confirm(`Sei sicuro di voler eliminare il progetto ${title}?`);
       if (confirm) form.submit();
     })
-  })
+  });
 </script>
+@if (session()->has('success'))
+    <script>
+        document.getElementById('create-success-alert').style.display = 'block';
+    </script>
+@endif
 @endsection
