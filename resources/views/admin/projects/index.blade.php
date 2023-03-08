@@ -6,11 +6,11 @@
 <header>
 <div class="container">
     <h1 class="my-5">Projects</h1>
-    <a class="btn btn-small btn-primary" href="{{route("admin.projects.create")}}">Aggiungi</a>
+    <a class="btn mb-3 btn-small btn-success" href="{{route("admin.projects.create")}}">Aggiungi <i class="fa-solid fa-plus"></i></a>
     <table class="table table-dark table-striped-columns">
         <thead>
             <tr>
-              <th scope="col">#</th>
+              <th scope="col">ID</th>
               <th scope="col">Title</th>
               <th scope="col">Description</th>
               <th scope="col">GIT Hub</th>
@@ -22,10 +22,11 @@
            <tr>
             <th scope="row">{{$project->id}}</th>
             <td>{{$project->title}}</td>
-            <td>{{$project->description}}</td>
+            <td>{{ Str::limit($project->description, 50)}}</td>
             <td>{{$project->github}}</td>
             <td>
                 <a href="{{route("admin.projects.show", $project->id)}}" class="btn btn-small btn-primary"><i class="fa-solid fa-eye"></i></a>
+                <a href="{{route("admin.projects.show", $project->id)}}" class="btn btn-small btn-warning"><i class="fa-solid fa-pen"></i></a>
             </td>
           </tr>
            @empty

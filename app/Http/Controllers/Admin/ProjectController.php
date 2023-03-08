@@ -34,7 +34,17 @@ class ProjectController extends Controller
         "title"=>"required|string|unique:projects|min:5|max:50",
         "description"=>"required|string",
         "image"=>"url|nullable",
-        "github"=>"required|url",
+        "github"=>"required|url|max:100",
+        ], [
+            "title.required" => "ERROR - il titolo è obbligatorio",
+            "title.unique" => "ERROR - il titolo $request->title è gia presente",
+            "title.min" => "ERROR - la lunghezza del titolo deve essere almeno di 5 caratteri",
+            "title.max" => "ERROR - la lunghezza del titolo non deve superare i 50 caratteri",
+            "description.required" => "ERROR - la descrizione è obbligatoria",
+            "image.url" => "ERROR - devi inserire un URL",
+            "github.required" => "ERROR - il link al progetto è obbligatorio",
+            "github.url"=> "ERROR - devi inserire un URL",
+            "github.max"=> "ERROR - la lunghezza del titolo non deve superare i 100 caratteri, controlla che sia un link github",
         ]);
         $data = $request->all();
         $project=new Project();
