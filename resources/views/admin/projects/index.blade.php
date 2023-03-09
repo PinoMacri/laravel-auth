@@ -28,17 +28,28 @@
     <h1 class="my-4">Projects</h1>
     <div class="d-flex justify-content-between mb-3">
       <a class="btn mb-3 btn-small btn-success" href="{{route("admin.projects.create")}}">Aggiungi <i class="fa-solid fa-plus"></i></a>
-      <div>
+      <div class="d-flex">
         <form action="{{route("admin.projects.index")}}" method="GET">
           <div class="input-group">
             <button class="btn btn-outline-secondary" type="submit">Filtra</button>
             <select class="form-select" name="filter" id="filter">
-              <option selected value="">Tutti</option>
-              <option value="pubblicati">Pubblicati</option>
-              <option value="bozze">Bozze</option>
-            </select>
+              <option {{ $filter === null ? 'selected' : '' }} value="">Tutti</option>
+              <option {{ $filter === 'pubblicati' ? 'selected' : '' }} value="pubblicati">Pubblicati</option>
+              <option {{ $filter === 'bozze' ? 'selected' : '' }} value="bozze">Bozze</option>
+          </select>
+          
           </div>
         </form>
+        
+        
+        <form method="GET" action="{{route("admin.projects.index")}}">
+          <div class="input-group ms-4">
+            <button class="btn btn-outline-secondary" type="submit">Cerca</button>
+            <input type="text" class="form-control" placeholder="Nome Progetto" name="search" value="{{ old('search', $search) }}">
+            <input type="hidden" name="filter" value="{{ session('filter') }}">
+          </div>
+        </form>
+        
       </div>
     </div>
    
@@ -60,7 +71,7 @@
             <th scope="row">{{$project->id}}</th>
             <td>{{$project->title}}</td>
             <td>{{ Str::limit($project->description, 50)}}</td>
-            <td>{{$project->github}}</td>
+            <td>{{ Str::limit($project->description, 20)}}</td>
             <td>
               <form action="{{route("admin.projects.toggle", $project->id)}}" method="POST">
               @method("PATCH")

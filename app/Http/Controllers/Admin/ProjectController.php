@@ -15,16 +15,33 @@ class ProjectController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $filter=$request->query("filter");
-        $query=Project::orderBy("updated_at","DESC");
-        if($filter){
-            $value=$filter==="bozze"? 0 : 1 ;
-            $query->where("is_published",$value);
-        }
-        $projects=$query->paginate(10);
-        return view("admin.projects.index", compact("projects"));
+{
+    $filter = $request->query('filter');
+    $request->session()->put('filter', $filter);
+    $search = $request->query("search");
+    $query = Project::orderBy("updated_at", "DESC");
+
+    if ($filter === "bozze") {
+        $query->where("is_published", false);
+    } elseif ($filter === "pubblicati") {
+        $query->where("is_published", true);
     }
+    
+    if ($search) {
+        $query->where("title", "LIKE", "%$search%");
+    }
+
+    $projects = $query->paginate(10);
+
+    $params = [
+        'filter' => $filter,
+        'search' => $search,
+    ];
+
+    $queryString = http_build_query($params);
+
+    return view("admin.projects.index", compact("projects", "filter", "queryString", "search"));
+}
 
     /**
      * Show the form for creating a new resource.
