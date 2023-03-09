@@ -8,7 +8,11 @@
         {{ session('recupero') }}
     </div>
 @endif
-
+@if(session('segnalazione'))
+    <div class="alert text-center alert-{{ session('type') }}">
+        {{ session('segnalazione') }}
+    </div>
+@endif
 
 
 <header id="myIndex-delete">
@@ -18,7 +22,7 @@
    <form class="" action="{{route("admin.projects.trash.dropAll")}}" method="POST">
 @csrf
 @method("DELETE")
-<button class="btn btn-danger deletes-form">{{$ciccio}}</button>
+<button class="btn btn-danger deletes-form">Svuota Cestino</button>
 
 </form>
     <table class="table table-dark table-striped-columns">
@@ -87,7 +91,7 @@ const deleteAllBtn = document.querySelector('.deletes-form');
 deleteAllBtn.addEventListener('click', function(event) {
   event.preventDefault();
   const count = deleteAllBtn.dataset.count;
-  const confirmDelete = confirm(`Sei sicuro di voler eliminare ${count} progetti?`);
+  const confirmDelete = confirm(`Sei sicuro di voler eliminare tutti i progetti?`);
   if (confirmDelete) {
     deleteAllBtn.closest('form').submit();
   }

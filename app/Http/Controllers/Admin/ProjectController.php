@@ -170,11 +170,10 @@ class ProjectController extends Controller
     }
 
     public function dropAll(){
-        //$count=Project::onlyTrashed()->count();
-        $ciccio=18;
+        Project::onlyTrashed()->forceDelete();
        
         return to_route("admin.projects.trash.index")
-            ->with("segnalazione","Sono stati eliminati definitivamente $ciccio Progetti")
+            ->with("segnalazione","Sono stati eliminati definitivamente tutti i Progetti")
             ->with("type","danger");
            
     }
