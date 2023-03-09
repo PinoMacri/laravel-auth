@@ -30,7 +30,7 @@
       <a class="btn mb-3 btn-small btn-success" href="{{route("admin.projects.create")}}">Aggiungi <i class="fa-solid fa-plus"></i></a>
       <div class="d-flex">
         <form action="{{route("admin.projects.index")}}" method="GET">
-          <div class="input-group">
+          <div class="input-group pe-3">
             <button class="btn btn-outline-secondary" type="submit">Filtra</button>
             <select class="form-select" name="filter" id="filter">
               <option {{ $filter === null ? 'selected' : '' }} value="">Tutti</option>
@@ -43,7 +43,7 @@
         
         
         <form method="GET" action="{{route("admin.projects.index")}}">
-          <div class="input-group ms-4">
+          <div class="input-group ">
             <button class="btn btn-outline-secondary" type="submit">Cerca</button>
             <input type="text" class="form-control" placeholder="Nome Progetto" name="search" value="{{ old('search', $search) }}">
             <input type="hidden" name="filter" value="{{ session('filter') }}">
