@@ -55,7 +55,9 @@
            @endforelse
           </tbody>
     </table>
-
+   <div>
+     {{$projects->links()}}
+   </div>
 </div>
 </header>
 @endsection
