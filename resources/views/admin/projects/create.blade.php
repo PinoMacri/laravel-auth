@@ -3,13 +3,13 @@
 @section("title","Crea Progetto")
 
 @section("content")
-<main>
+<main id="myCreate">
   
   <div class="container">
     
 
     <div class="container my-5">
-     <form class="row g-3" action="{{route("admin.projects.store")}}" method="POST">
+     <form class="row g-3" action="{{route("admin.projects.store")}}" method="POST" enctype="multipart/form-data">
         @csrf
         <!-- Titolo -->
         <div class="col-md-6">
@@ -49,8 +49,10 @@
         </div>
         <!-- Immagine -->
         <div class="col-md-6 mb-3">
-            <label for="image" class="form-label">Immagine</label>
-            <input type="text" class="form-control @error('image') is-invalid @enderror" id="image" name="image" @error("image") value="" @enderror value="{{old('image')}}">
+          <label for="image" class="form-label">Immagine</label>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" >
             @if($errors->has("image"))
             <ul class="alert list-unstyled alert-danger ps-2 d-flex flex-column justify-content-center">
               @foreach ($errors->get('image') as $error)
@@ -58,7 +60,16 @@
               @endforeach
               </ul>
               @endif
-        </div>
+            </div>
+
+            <div class="col-md-1">
+              <img class="img-create" id="img-preview"
+              src="https://marcolanci.it/utils/placeholder.jpg" alt="">
+            </div>
+          </div>
+        
+          
+      </div>
         <!-- Bottone -->
         <div class="col-12">
           <button type="submit" class="btn btn-success">Aggiungi</button>
@@ -68,4 +79,23 @@
               
     </div>
 </main>
+@endsection
+
+@section("scripts")
+<script>
+  const placeholder="https://marcolanci.it/utils/placeholder.jpg";
+  const imageInput=document.getElementById("image");
+  const imagePreview=document.getElementById("img-preview");
+  imageInput.addEventListener("change", ()=>{
+    if(imageInput.files && imageInput.files[0]){
+      const reader=new FileReader();
+      reader.readAsDataURL(imageInput.files[0]);
+      reader.onload=e=>{
+        imagePreview.src=e.target.result;
+      }
+    } else {
+      imagePreview.src=placeholder;
+    }
+  })
+</script>
 @endsection

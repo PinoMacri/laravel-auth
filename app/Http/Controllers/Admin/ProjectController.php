@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 
@@ -34,7 +36,7 @@ class ProjectController extends Controller
         $request->validate([
         "title"=>"required|string|unique:projects|min:5|max:50",
         "description"=>"required|string",
-        "image"=>"url|nullable",
+        "image"=>"image|nullable|mimes:jpeg,jpg,png",
         "github"=>"required|url|max:100",
         ], [
             "title.required" => "ERROR - il titolo è obbligatorio",
@@ -42,13 +44,17 @@ class ProjectController extends Controller
             "title.min" => "ERROR - la lunghezza del titolo deve essere almeno di 5 caratteri",
             "title.max" => "ERROR - la lunghezza del titolo non deve superare i 50 caratteri",
             "description.required" => "ERROR - la descrizione è obbligatoria",
-            "image.url" => "ERROR - devi inserire un URL",
+            "image.image" => "ERROR - sono accettati solo formati di tipo jpeg, jpg, png",
             "github.required" => "ERROR - il link al progetto è obbligatorio",
             "github.url"=> "ERROR - devi inserire un URL",
             "github.max"=> "ERROR - la lunghezza del titolo non deve superare i 100 caratteri, controlla che sia un link github",
         ]);
         $data = $request->all();
         $project=new Project();
+        if(Arr::exists($data,"image")){
+            $img_url=Storage::put("projects",$data["image"]);
+            $data["image"] =$img_url;
+        };
         $project->fill($data);
         $project->save();
         session()->flash('success', 'Creazione avvenuta con successo!');
@@ -81,18 +87,23 @@ class ProjectController extends Controller
         $request->validate([
             "title"=>["required","string", "min:5", "max:50", Rule::unique("projects")->ignore($project->id)],
             "description"=>"required|string",
-            "image"=>"url|nullable",
+            "image"=>"image|nullable|mimes:jpeg,jpg,png",
             "github"=>"required|url|max:100",
             ], [
                 "title.required" => "ERROR - il titolo è obbligatorio",
                 "title.min" => "ERROR - la lunghezza del titolo deve essere almeno di 5 caratteri",
                 "title.max" => "ERROR - la lunghezza del titolo non deve superare i 50 caratteri",
                 "description.required" => "ERROR - la descrizione è obbligatoria",
-                "image.url" => "ERROR - devi inserire un URL",
+                "image.image" => "ERROR - sono accettati solo formati di tipo jpeg, jpg, png",
                 "github.required" => "ERROR - il link al progetto è obbligatorio",
                 "github.url"=> "ERROR - devi inserire un URL",
                 "github.max"=> "ERROR - la lunghezza del titolo non deve superare i 100 caratteri, controlla che sia un link github",
             ]);
+            if(Arr::exists($data,"image")){
+                if($project->image)Storage::delete($project->image);
+                $img_url=Storage::put("projects",$data["image"]);
+                $data["image"] =$img_url;
+            };
         $project->update($data);
         $project->save();
         return to_route("admin.projects.show", $project->id)->with("success", "Modifica avvenuta con successo.");
@@ -103,6 +114,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+       if($project->image)Storage::delete($project->image);
         $project->delete();
         return to_route("admin.projects.index")->with("delete", "Il Progetto $project->title è stato eliminato con successo");
     }

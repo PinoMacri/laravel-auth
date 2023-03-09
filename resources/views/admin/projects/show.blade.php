@@ -19,6 +19,7 @@
 
          <a href="{{$project->github}}" target="_blank">Link Progetto a GitHub</a>
          <a href="{{route("admin.projects.index")}}" class="d-block">Ritorna ai Progetti</a>
+         <img src="{{asset("storage/" . $project->image)}}" alt="">
     </div>
 </header>
 

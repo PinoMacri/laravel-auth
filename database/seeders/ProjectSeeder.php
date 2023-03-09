@@ -16,7 +16,10 @@ class ProjectSeeder extends Seeder
         $projects = config("projects");
         foreach($projects as $project){
             $new_project=new Project();
-            $new_project->fill($project);
+            $new_project->title=$project["title"];
+            $new_project->description=$project["description"];
+           // $new_project->image=$project["image"];
+            $new_project->github=$project["github"];
             $new_project->save();
         }
     }
