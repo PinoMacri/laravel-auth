@@ -40,6 +40,7 @@ class ProjectController extends Controller
 
     $queryString = http_build_query($params);
 
+
     return view("admin.projects.index", compact("projects", "filter", "queryString", "search"));
 }
 
@@ -141,7 +142,7 @@ class ProjectController extends Controller
     {
        if($project->image)Storage::delete($project->image);
         $project->delete();
-        return to_route("admin.projects.index")->with("delete", "Il Progetto $project->title è stato eliminato con successo");
+        return to_route("admin.projects.index")->with("delete", "Il Progetto $project->title è stato eliminato");
     }
 
     public function togglePubblication(Project $project){
@@ -150,4 +151,34 @@ class ProjectController extends Controller
         $project->save();
         return to_route("admin.projects.index")->with("type","success")->with("msg","Il Progetto è stato $action con successo");
     }
+
+    public function trash(){
+        $projects=Project::onlyTrashed()->get();
+        return view("admin.projects.trash.index", compact("projects"));
+    }
+
+    public function restore(int $id){
+        $project = Project::onlyTrashed()->findOrFail($id);
+        $project->restore();
+        return to_route("admin.projects.index")->with("message","Il Progetto $project->title è stato ripristinato")->with("type", "success");
+    }
+
+    public function drop(int $id){
+        $project = Project::onlyTrashed()->findOrFail($id);
+        $project->forceDelete();
+        return to_route("admin.projects.trash.index")->with("recupero","Il Progetto $project->title è stato eliminato definitivamente")->with("type","danger");
+    }
+
+    public function dropAll(){
+        //$count=Project::onlyTrashed()->count();
+        $ciccio=18;
+       
+        return to_route("admin.projects.trash.index")
+            ->with("segnalazione","Sono stati eliminati definitivamente $ciccio Progetti")
+            ->with("type","danger");
+           
+    }
+    
+
+    
 }

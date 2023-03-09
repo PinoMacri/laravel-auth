@@ -14,7 +14,11 @@
         {{ session('msg') }}
     </div>
 @endif
-
+@if(session('message'))
+    <div class="alert text-center alert-{{ session('type') }}">
+        {{ session('message') }}
+    </div>
+@endif
 
 @foreach ($projects as $project)
 <div class="alert text-center alert-success alert-dismissible fade show" role="alert" style="display:none;" id="create-success-alert">
@@ -23,11 +27,12 @@
 </div>
 @endforeach
 
-<header>
+<header id="myIndex">
 <div class="container">
-    <h1 class="my-4">Projects</h1>
+    <h1 class="my-4">Progetti</h1>
     <div class="d-flex justify-content-between mb-3">
       <a class="btn mb-3 btn-small btn-success" href="{{route("admin.projects.create")}}">Aggiungi <i class="fa-solid fa-plus"></i></a>
+      <a href="{{route("admin.projects.trash.index")}}">Cestino</a>
       <div class="d-flex">
         <form action="{{route("admin.projects.index")}}" method="GET">
           <div class="input-group pe-3">
