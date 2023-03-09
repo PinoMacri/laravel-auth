@@ -9,6 +9,13 @@
 </div>
 @endif
 
+@if(session()->has('msg'))
+    <div class="alert text-center alert-{{ session('type') }}">
+        {{ session('msg') }}
+    </div>
+@endif
+
+
 @foreach ($projects as $project)
 <div class="alert text-center alert-success alert-dismissible fade show" role="alert" style="display:none;" id="create-success-alert">
   <p>Il Progetto {{$project->title}} è stato creato con sucesso!</p>
@@ -18,8 +25,23 @@
 
 <header>
 <div class="container">
-    <h1 class="my-5">Projects</h1>
-    <a class="btn mb-3 btn-small btn-success" href="{{route("admin.projects.create")}}">Aggiungi <i class="fa-solid fa-plus"></i></a>
+    <h1 class="my-4">Projects</h1>
+    <div class="d-flex justify-content-between mb-3">
+      <a class="btn mb-3 btn-small btn-success" href="{{route("admin.projects.create")}}">Aggiungi <i class="fa-solid fa-plus"></i></a>
+      <div>
+        <form action="{{route("admin.projects.index")}}" method="GET">
+          <div class="input-group">
+            <button class="btn btn-outline-secondary" type="submit">Filtra</button>
+            <select class="form-select" name="filter" id="filter">
+              <option selected value="">Tutti</option>
+              <option value="pubblicati">Pubblicati</option>
+              <option value="bozze">Bozze</option>
+            </select>
+          </div>
+        </form>
+      </div>
+    </div>
+   
     <table class="table table-dark table-striped-columns">
         <thead>
             <tr>
