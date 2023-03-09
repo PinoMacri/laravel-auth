@@ -24,10 +24,12 @@
         <thead>
             <tr>
               <th scope="col">ID</th>
-              <th scope="col">Title</th>
-              <th scope="col">Description</th>
+              <th scope="col">Titolo</th>
+              <th scope="col">Descrizione</th>
               <th scope="col">GIT Hub</th>
-              <th></th>
+              <th scope="col">Stato</th>
+              <th scope="col"></th>
+
             </tr>
           </thead>
           <tbody>
@@ -37,6 +39,16 @@
             <td>{{$project->title}}</td>
             <td>{{ Str::limit($project->description, 50)}}</td>
             <td>{{$project->github}}</td>
+            <td>
+              <form action="{{route("admin.projects.toggle", $project->id)}}" method="POST">
+              @method("PATCH")
+              @csrf
+              <button type="submit" class="btn btn-outline">
+                <i class="fas fa-toggle-{{$project->is_published ? "on" : "off"}}  {{$project->is_published ? "text-success" : "text-danger"}}"></i>
+              </button>
+              </form>
+            </td>
+
             <td class="text-center">
                 <a href="{{route("admin.projects.show", $project->id)}}" class="btn btn-small btn-primary"><i class="fa-solid fa-eye"></i></a>
                 <a href="{{route("admin.projects.edit", $project->id)}}" class="btn btn-small btn-warning"><i class="fa-solid fa-pen"></i></a>
@@ -47,10 +59,11 @@
                   </button>
                 </form>
             </td>
+           
           </tr>
            @empty
             <tr>
-                <th scope="row" colspan="4" class="text-center">Non ci sono Progetti</th>
+                <th scope="row" colspan="5" class="text-center">Non ci sono Progetti</th>
             </tr>
            @endforelse
           </tbody>

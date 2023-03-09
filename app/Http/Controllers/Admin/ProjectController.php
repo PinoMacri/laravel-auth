@@ -56,6 +56,7 @@ class ProjectController extends Controller
             $data["image"] =$img_url;
         };
         $project->fill($data);
+        $project->is_published=Arr::exists($data,"is_published");
         $project->save();
         session()->flash('success', 'Creazione avvenuta con successo!');
         return redirect()->route("admin.projects.index");
@@ -104,6 +105,7 @@ class ProjectController extends Controller
                 $img_url=Storage::put("projects",$data["image"]);
                 $data["image"] =$img_url;
             };
+            $data["is_published"]=Arr::exists($data,"is_published");
         $project->update($data);
         $project->save();
         return to_route("admin.projects.show", $project->id)->with("success", "Modifica avvenuta con successo.");
@@ -117,5 +119,12 @@ class ProjectController extends Controller
        if($project->image)Storage::delete($project->image);
         $project->delete();
         return to_route("admin.projects.index")->with("delete", "Il Progetto $project->title è stato eliminato con successo");
+    }
+
+    public function togglePubblication(Project $project){
+        $project->is_published=!$project->is_published;
+        $action=$project->is_published ? "Pubblicato" : "Messo in Bozza";
+        $project->save();
+        return to_route("admin.projects.index")->with("type","success")->with("msg","Il Progetto è stato $action con successo");
     }
 }
