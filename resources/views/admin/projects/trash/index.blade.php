@@ -44,8 +44,6 @@
             <td>{{ Str::limit($project->description, 50)}}</td>
             <td>{{ Str::limit($project->description, 20)}}</td>
             <td class="text-center">
-                <a href="{{route("admin.projects.show", $project->id)}}" class="btn btn-small btn-primary"><i class="fa-solid fa-eye"></i></a>
-                <a href="{{route("admin.projects.edit", $project->id)}}" class="btn btn-small btn-warning"><i class="fa-solid fa-pen"></i></a>
                 <form class="delete-form d-inline" data-project="{{$project->title}}"  action="{{route("admin.projects.trash.drop", $project->id)}}" method="POST">
                     @csrf
                     @method("DELETE")
